@@ -12,7 +12,7 @@ const ExerciseScreen = ({ navigation }) => {
     const [filteredExercises, setFilteredExercises] = useState(exercises);
     const [selectedCategory, setSelectedCategory] = useState(null);
 
-    const muscleCategories = ['All', 'Chest', 'Back', 'Legs', 'Arms', 'Shoulders', 'Core'];
+    const muscleCategories = ['All', 'Chest', 'Back', 'Legs', 'Arms', 'Shoulders', 'Abs'];
 
     const handleSearch = (text) => {
         setSearch(text);
