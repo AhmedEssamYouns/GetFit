@@ -12,7 +12,10 @@ const muscles = [
 const BodyScreen = () => {
     const [side, setSide] = useState('front');
     const [workouts, setWorkouts] = useState({});
-
+    const handleBodyPartPress = (bodyPart) => {
+        // Handle the body part press here (e.g., show a tooltip, navigate, etc.)
+        console.log('User tapped:', bodyPart.slug);
+      };
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -133,6 +136,7 @@ const BodyScreen = () => {
                 })}
                 colors={['#FFCCCC', '#FF6666', '#FF3333', '#FF3333', '#990000']}
                 gender="male"
+                onBodyPartPress={handleBodyPartPress}
                 side={side}
                 scale={1.1}
             />

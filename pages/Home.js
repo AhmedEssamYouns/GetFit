@@ -195,10 +195,11 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: 'tomato',
-    padding: 7,
+    paddingVertical: 8,
+    paddingHorizontal:1,
     marginHorizontal: 3,
     borderRadius: 10,
-    width: 120,
+    width: 110,
     alignItems: 'center',
     elevation: 2,
   },
