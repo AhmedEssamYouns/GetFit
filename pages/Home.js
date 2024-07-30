@@ -101,11 +101,11 @@ export default function HomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={{ flexDirection: "row", alignSelf: "center", marginTop: 15 }}>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('GetPlan')}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Program')}>
           <Text style={styles.buttonText}>Get A Program</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('CustomizePlan')}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Create Workout')}>
           <Text style={styles.buttonText}>Customize A Program</Text>
         </TouchableOpacity>
 
