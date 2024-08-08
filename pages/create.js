@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Modal, TextInput, FlatList, Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 
 const CreateWorkout = () => {
+  const navigation = useNavigation()
   const [workoutDays, setWorkoutDays] = useState([]);
   const [currentDay, setCurrentDay] = useState('');
   const [currentMuscle, setCurrentMuscle] = useState('');
@@ -12,6 +15,23 @@ const CreateWorkout = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalType, setModalType] = useState('');
   const [isEditing, setIsEditing] = useState(false);
+  const [workoutName, setWorkoutName] = useState('');
+  const [allWorkouts, setAllWorkouts] = useState([]);
+
+  useEffect(() => {
+    const fetchWorkouts = async () => {
+      try {
+        const jsonValue = await AsyncStorage.getItem('@workout_programs');
+        if (jsonValue != null) {
+          setAllWorkouts(JSON.parse(jsonValue));
+        }
+      } catch (e) {
+        Alert.alert('Error', 'Failed to load the workout programs.');
+      }
+    };
+
+    fetchWorkouts();
+  }, []);
 
   const handleAddDay = () => {
     if (currentDay) {
@@ -71,6 +91,28 @@ const CreateWorkout = () => {
     const updatedDays = [...workoutDays];
     updatedDays[dayIndex].muscles[muscleIndex].exercises = updatedDays[dayIndex].muscles[muscleIndex].exercises.filter((_, i) => i !== exerciseIndex);
     setWorkoutDays(updatedDays);
+  };
+
+  const saveProgram = async () => {
+    if (!workoutName) {
+      Alert.alert('Error', 'Please enter a name for the workout program.');
+      return;
+    }
+
+    try {
+      const newWorkout = { id: Date.now().toString(), name: workoutName, days: workoutDays };
+      const updatedWorkouts = [...allWorkouts, newWorkout];
+      const jsonValue = JSON.stringify(updatedWorkouts);
+      await AsyncStorage.setItem('@workout_programs', jsonValue);
+      setAllWorkouts(updatedWorkouts);
+      setWorkoutDays([]);
+      setWorkoutName('');
+      Alert.alert('Success', 'Workout program saved successfully!');
+      navigation.navigate('My Program')
+
+    } catch (e) {
+      Alert.alert('Error', 'Failed to save the workout program.');
+    }
   };
 
   const renderMuscles = ({ item: muscle, index: muscleIndex }) => (
@@ -162,6 +204,19 @@ const CreateWorkout = () => {
 
   return (
     <View style={styles.container}>
+      <View style={{ flexDirection: "row", gap: 5, alignSelf: 'center' }}>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter workout program name"
+          value={workoutName}
+          onChangeText={setWorkoutName}
+        />
+        <TouchableOpacity style={styles.saveButton} onPress={saveProgram}>
+          <Text style={{ color: "white", fontSize: 10, padding: 5 }}>Save Program</Text>
+        </TouchableOpacity>
+      </View>
+
+
       <FlatList
         data={workoutDays}
         keyExtractor={(item, index) => index.toString()}
@@ -180,6 +235,7 @@ const CreateWorkout = () => {
           </View>
         }
       />
+
       <Modal
         animationType="slide"
         transparent={true}
@@ -307,6 +363,13 @@ const styles = StyleSheet.create({
     padding: 15,
     margin: 10,
     borderRadius: 5,
+  },
+  saveButton: {
+    backgroundColor: 'green',
+    borderRadius: 5,
+    justifyContent: "center",
+    alignItems: 'center',
+    marginVertical: 10,
   },
 });
 

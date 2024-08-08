@@ -1,6 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert } from 'react-native';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 const workoutData = {
     'Full Body Workout': {
         Beginner: ['Squats', 'Push-Ups', 'Pull-Ups'],
@@ -64,8 +66,46 @@ const workoutData = {
 };
 
 const SuggestWorkout = ({ route }) => {
+    const navigation = useNavigation()
     const { plan, level } = route.params;
     const workoutPlan = workoutData[plan][level];
+    const saveWorkout = async () => {
+        try {
+            // Retrieve existing saved workouts
+            const existingWorkoutsJson = await AsyncStorage.getItem('@saved_workout');
+            let existingWorkouts = [];
+
+            if (existingWorkoutsJson != null) {
+                try {
+                    existingWorkouts = JSON.parse(existingWorkoutsJson);
+
+                    // Ensure existingWorkouts is an array
+                    if (!Array.isArray(existingWorkouts)) {
+                        existingWorkouts = [];
+                    }
+                } catch (error) {
+                    console.log('Error parsing JSON:', error);
+                    existingWorkouts = [];
+                }
+            }
+
+            // Add the new workout to the list
+            const newWorkout = { plan, level, workoutPlan };
+            existingWorkouts.push(newWorkout);
+
+            // Save the updated list back to AsyncStorage
+            const updatedWorkoutsJson = JSON.stringify(existingWorkouts);
+            await AsyncStorage.setItem('@saved_workout', updatedWorkoutsJson);
+
+            Alert.alert('Success', 'Workout saved successfully!');
+            navigation.navigate('My Program')
+        } catch (e) {
+            console.log('Error saving workout:', e); // Log the error to the console
+            Alert.alert('Error', 'Failed to save the workout.');
+        }
+    };
+
+
 
     return (
         <View style={styles.container}>
@@ -76,13 +116,15 @@ const SuggestWorkout = ({ route }) => {
                 renderItem={({ item }) => (
                     <View style={styles.dayContainer}>
                         <Text style={styles.dayTitle}>{item[0]}</Text>
-                        {
-                            item[1].map((exercise, index) => (
-                                <Text key={index} style={styles.exerciseText}>{exercise}</Text>
-                            ))}
+                        {item[1].map((exercise, index) => (
+                            <Text key={index} style={styles.exerciseText}>{exercise}</Text>
+                        ))}
                     </View>
                 )}
             />
+            <TouchableOpacity style={styles.saveButton} onPress={saveWorkout}>
+                <Text style={styles.buttonText}>Save Workout</Text>
+            </TouchableOpacity>
         </View>
     );
 };
@@ -110,6 +152,17 @@ const styles = StyleSheet.create({
     exerciseText: {
         fontSize: 16,
         marginBottom: 5,
+    },
+    saveButton: {
+        backgroundColor: 'grey',
+        padding: 15,
+        borderRadius: 5,
+        alignItems: 'center',
+        marginVertical: 10,
+    },
+    buttonText: {
+        color: '#fff',
+        fontSize: 16,
     },
 });
 

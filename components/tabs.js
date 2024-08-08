@@ -11,6 +11,7 @@ import ExerciseDetailScreen from '../pages/Details';
 import getProgram from '../pages/getProgram';
 import SuggestWorkout from '../pages/plan';
 import CreateWorkout from '../pages/create';
+import SavedWorkout from '../pages/saved';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -92,6 +93,8 @@ export default function MainTabNavigator() {
             <Stack.Screen name="Program" component={getProgram} options={{ headerShown: true }} />
             <Stack.Screen name="Suggested Workout" component={SuggestWorkout} options={{ headerShown: true }} />
             <Stack.Screen name="Create Workout" component={CreateWorkout} options={{ headerShown: true }} />
+            <Stack.Screen name="My Program" component={SavedWorkout} options={{ headerShown: true }} />
+
 
 
         </Stack.Navigator>

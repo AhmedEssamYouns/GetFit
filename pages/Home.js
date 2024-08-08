@@ -109,7 +109,7 @@ export default function HomeScreen({ navigation }) {
           <Text style={styles.buttonText}>Customize A Program</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('MyPlan')}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('My Program')}>
           <Text style={styles.buttonText}>My Program</Text>
         </TouchableOpacity>
       </View>
