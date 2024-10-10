@@ -1,19 +1,45 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Modal, TextInput, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Modal,
+  TextInput,
+  Alert,
+} from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
 
-const GetProgram = ({ navigation }) => {
-  const [suggestProgramModalVisible, setSuggestProgramModalVisible] = useState(false);
-  const [chooseProgramModalVisible, setChooseProgramModalVisible] = useState(false);
+type RootStackParamList = {
+  'Suggested Workout': { plan: string; level: string };
+  GetProgram: undefined;
+};
 
-  const [days, setDays] = useState('');
-  const [level, setLevel] = useState('Beginner');
-  const [programLevel, setProgramLevel] = useState('Beginner');
-  const [programPlan, setProgramPlan] = useState('');
+type GetProgramNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  'GetProgram'
+>;
 
-  const levels = ['Beginner', 'Intermediate', 'Advanced'];
-  const plans = ['Push-Pull-Legs', 'Pro Split', 'Arnold Split'];
+type GetProgramProps = {
+  navigation: GetProgramNavigationProp;
+};
 
-  const suggestPlan = (days) => {
+const GetProgram: React.FC<GetProgramProps> = ({ navigation }) => {
+  const [suggestProgramModalVisible, setSuggestProgramModalVisible] =
+    useState<boolean>(false);
+  const [chooseProgramModalVisible, setChooseProgramModalVisible] =
+    useState<boolean>(false);
+
+  const [days, setDays] = useState<string>('');
+  const [level, setLevel] = useState<string>('Beginner');
+  const [programLevel, setProgramLevel] = useState<string>('Beginner');
+  const [programPlan, setProgramPlan] = useState<string>('');
+
+  const levels: string[] = ['Beginner', 'Intermediate', 'Advanced'];
+  const plans: string[] = ['Push-Pull-Legs', 'Pro Split', 'Arnold Split'];
+
+  const suggestPlan = (days: string) => {
     const numDays = parseInt(days);
     if (isNaN(numDays) || numDays < 1) {
       Alert.alert('Invalid Input', 'Please enter a valid number of days.');
@@ -21,9 +47,7 @@ const GetProgram = ({ navigation }) => {
     }
 
     let suggestedPlan = '';
-    if (numDays === 1) {
-      suggestedPlan = 'Upper-Lower Split';
-    } else if (numDays === 2) {
+    if (numDays === 1 || numDays === 2) {
       suggestedPlan = 'Upper-Lower Split';
     } else if (numDays === 3 || numDays === 4) {
       suggestedPlan = 'Push-Pull-Legs';
@@ -39,20 +63,19 @@ const GetProgram = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity 
-        style={styles.button} 
+      <TouchableOpacity
+        style={styles.button}
         onPress={() => setSuggestProgramModalVisible(true)}
       >
         <Text style={styles.buttonText}>Suggest Program</Text>
       </TouchableOpacity>
-      <TouchableOpacity 
-        style={styles.button} 
+      <TouchableOpacity
+        style={styles.button}
         onPress={() => setChooseProgramModalVisible(true)}
       >
         <Text style={styles.buttonText}>Choose Program</Text>
       </TouchableOpacity>
 
-      {/* Suggest Program Modal */}
       <Modal
         animationType="slide"
         transparent={true}
@@ -67,7 +90,9 @@ const GetProgram = ({ navigation }) => {
           onPressOut={() => setSuggestProgramModalVisible(false)}
         >
           <TouchableOpacity style={styles.modalView} activeOpacity={1}>
-            <Text style={styles.modalText}>Enter days you are free to workout:</Text>
+            <Text style={styles.modalText}>
+              Enter days you are free to workout:
+            </Text>
             <TextInput
               style={styles.input}
               placeholder="e.g., 3"
@@ -109,7 +134,6 @@ const GetProgram = ({ navigation }) => {
         </TouchableOpacity>
       </Modal>
 
-      {/* Choose Program Modal */}
       <Modal
         animationType="slide"
         transparent={true}
@@ -172,7 +196,10 @@ const GetProgram = ({ navigation }) => {
               style={styles.button}
               onPress={() => {
                 setChooseProgramModalVisible(false);
-                navigation.navigate('Suggested Workout', { plan: programPlan, level: programLevel });
+                navigation.navigate('Suggested Workout', {
+                  plan: programPlan,
+                  level: programLevel,
+                });
               }}
             >
               <Text style={styles.buttonText}>Submit</Text>

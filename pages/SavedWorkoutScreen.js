@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import SavedWorkoutsScreen from './debug';
+import SavedWorkoutsScreen from './GetSavedWorkouts';
 
 const SavedWorkout = () => {
   const [savedWorkouts, setSavedWorkouts] = useState([]);

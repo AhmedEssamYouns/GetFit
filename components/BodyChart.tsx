@@ -1,21 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import Body from "react-native-body-highlighter";
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import Body from "react-native-body-highlighter"; // Ensure this library is installed
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const muscles = [
+interface Muscle {
+    label: string;
+    value: string;
+}
+
+interface Workout {
+    weight: number;
+}
+
+const muscles: Muscle[] = [
     { label: "Forearm", value: "forearm" },
     { label: "Abs", value: "abs" },
     { label: "Chest", value: "chest" },
 ];
 
-const BodyScreen = () => {
-    const [side, setSide] = useState('front');
-    const [workouts, setWorkouts] = useState({});
-    const handleBodyPartPress = (bodyPart) => {
-        // Handle the body part press here (e.g., show a tooltip, navigate, etc.)
+const BodyScreen: React.FC = () => {
+    const [side, setSide] = useState<'front' | 'back'>('front');
+    const [workouts, setWorkouts] = useState<Record<string, Workout[]>>({});
+
+    const handleBodyPartPress = (bodyPart: { slug: string }) => {
         console.log('User tapped:', bodyPart.slug);
-      };
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -32,7 +42,7 @@ const BodyScreen = () => {
         };
 
         fetchData();
-        const intervalId = setInterval(fetchData, 5000); // Adjust the interval as needed
+        const intervalId = setInterval(fetchData, 5000);
 
         return () => clearInterval(intervalId);
     }, [workouts]);
@@ -40,82 +50,76 @@ const BodyScreen = () => {
     const toggleSide = () => {
         setSide(prevSide => (prevSide === 'front' ? 'back' : 'front'));
     };
-    const calculateIntensity = (muscle, latestWeight) => {
-        switch (muscle) {
-            // Chest
-            case 'chest':
-                if (latestWeight >= 90) return '5'; // Darkest red
-                if (latestWeight >= 70) return '4'; // Dark red
-                if (latestWeight >= 50) return '3'; // Red
-                if (latestWeight >= 30) return '2'; // Light red
-                if (latestWeight >= 10) return '1'; // Very light red
-                return '1'; // Default to very light red
 
-            // Arms
+    const calculateIntensity = (muscle: string, latestWeight: number): string => {
+        switch (muscle) {
+            case 'chest':
+                if (latestWeight >= 90) return '5';
+                if (latestWeight >= 70) return '4';
+                if (latestWeight >= 50) return '3';
+                if (latestWeight >= 30) return '2';
+                if (latestWeight >= 10) return '1';
+                return '1';
+
             case 'biceps':
             case 'triceps':
             case 'forearm':
             case 'back-deltoids':
             case 'front-deltoids':
-                if (latestWeight >= 40) return '5'; // Darkest red
-                if (latestWeight >= 30) return '4'; // Dark red
-                if (latestWeight >= 20) return '3'; // Red
-                if (latestWeight >= 10) return '2'; // Light red
-                if (latestWeight >= 5) return '1'; // Very light red
-                return '1'; // Default to very light red
+                if (latestWeight >= 40) return '5';
+                if (latestWeight >= 30) return '4';
+                if (latestWeight >= 20) return '3';
+                if (latestWeight >= 10) return '2';
+                if (latestWeight >= 5) return '1';
+                return '1';
 
-            // Abs
             case 'abs':
             case 'obliques':
-                if (latestWeight >= 30) return '5'; // Darkest red
-                if (latestWeight >= 20) return '4'; // Dark red
-                if (latestWeight >= 15) return '3'; // Red
-                if (latestWeight >= 10) return '2'; // Light red
-                if (latestWeight >= 5) return '1'; // Very light red
-                return '1'; // Default to very light red
+                if (latestWeight >= 30) return '5';
+                if (latestWeight >= 20) return '4';
+                if (latestWeight >= 15) return '3';
+                if (latestWeight >= 10) return '2';
+                if (latestWeight >= 5) return '1';
+                return '1';
 
-            // Legs
             case 'adductor':
             case 'hamstring':
             case 'quadriceps':
             case 'abductors':
             case 'calves':
             case 'gluteal':
-                if (latestWeight >= 50) return '5'; // Darkest red
-                if (latestWeight >= 40) return '4'; // Dark red
-                if (latestWeight >= 30) return '3'; // Red
-                if (latestWeight >= 20) return '2'; // Light red
-                if (latestWeight >= 10) return '1'; // Very light red
-                return '1'; // Default to very light red
+                if (latestWeight >= 50) return '5';
+                if (latestWeight >= 40) return '4';
+                if (latestWeight >= 30) return '3';
+                if (latestWeight >= 20) return '2';
+                if (latestWeight >= 10) return '1';
+                return '1';
 
-            // Head
             case 'head':
             case 'neck':
-                if (latestWeight >= 20) return '5'; // Darkest red
-                if (latestWeight >= 15) return '4'; // Dark red
-                if (latestWeight >= 10) return '3'; // Red
-                if (latestWeight >= 5) return '2'; // Light red
-                if (latestWeight >= 2) return '1'; // Very light red
-                return '1'; // Default to very light red
+                if (latestWeight >= 20) return '5';
+                if (latestWeight >= 15) return '4';
+                if (latestWeight >= 10) return '3';
+                if (latestWeight >= 5) return '2';
+                if (latestWeight >= 2) return '1';
+                return '1';
 
-            // Trapezius, Upper-back, Lower-back
             case 'trapezius':
             case 'upper-back':
             case 'lower-back':
-                if (latestWeight >= 50) return '5'; // Darkest red
-                if (latestWeight >= 40) return '4'; // Dark red
-                if (latestWeight >= 30) return '3'; // Red
-                if (latestWeight >= 20) return '2'; // Light red
-                if (latestWeight >= 10) return '1'; // Very light red
-                return '1'; // Default to very light red
+                if (latestWeight >= 50) return '5';
+                if (latestWeight >= 40) return '4';
+                if (latestWeight >= 30) return '3';
+                if (latestWeight >= 20) return '2';
+                if (latestWeight >= 10) return '1';
+                return '1';
 
             default:
-                return '1'; // Default to very light red for unknown muscles
+                return '1';
         }
     };
 
-
-    const getLatestWeight = (muscleWorkouts) => {
+    const getLatestWeight = (muscleWorkouts: Workout[]): number => {
         if (!muscleWorkouts || muscleWorkouts.length === 0) return 0;
         return muscleWorkouts[muscleWorkouts.length - 1].weight;
     };
@@ -124,14 +128,11 @@ const BodyScreen = () => {
         <View style={styles.container}>
             <Body
                 data={muscles.map(muscle => {
-                    const latestWeight = getLatestWeight(workouts[muscle.value]);
+                    const latestWeight = getLatestWeight(workouts[muscle.value] || []);
                     const intensity = calculateIntensity(muscle.value, latestWeight);
-                    console.log(`Muscle: ${muscle.label}, Latest Weight: ${latestWeight}, Intensity: ${intensity}`);
                     return {
                         slug: muscle.value,
                         intensity: intensity,
-
-
                     };
                 })}
                 colors={['#FFCCCC', '#FF6666', '#FF3333', '#FF3333', '#990000']}
@@ -146,36 +147,29 @@ const BodyScreen = () => {
 
             <View style={styles.levelsContainer}>
                 <View style={{ flexDirection: "row" }}>
-                    <View style={[styles.levelBox, styles.beginner]}>
-                    </View>
+                    <View style={[styles.levelBox, styles.beginner]} />
                     <Text style={styles.levelText}>Beginner</Text>
                 </View>
                 <View style={{ flexDirection: "row" }}>
-                    <View style={[styles.levelBox, styles.intermediate]}>
-                    </View>
+                    <View style={[styles.levelBox, styles.intermediate]} />
                     <Text style={styles.levelText}>Intermediate</Text>
                 </View>
                 <View style={{ flexDirection: "row" }}>
-                    <View style={[styles.levelBox, styles.advanced]}>
-                    </View>
+                    <View style={[styles.levelBox, styles.advanced]} />
                     <Text style={styles.levelText}>Advanced</Text>
                 </View>
-
             </View>
         </View>
-
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flexGrow: 1,
-        backgroundColor: "#fff",
         alignItems: "center",
         padding: 16,
     },
     button: {
-        marginTop: 20,
         padding: 10,
         backgroundColor: 'gray',
         borderRadius: 5,
@@ -187,11 +181,10 @@ const styles = StyleSheet.create({
     levelsContainer: {
         position: 'absolute',
         flexDirection: 'column',
-        marginTop: 20,
         width: 200,
         gap: 5,
-        left: -20,
-        top: 70,
+        bottom:300,
+        left: -30,
         paddingHorizontal: 20,
     },
     levelBox: {
@@ -212,7 +205,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#990000',
     },
     levelText: {
-        color: 'black',
+        color: '#fff',
         fontSize: 12,
         fontWeight: 'bold',
     },

@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, FlatList, TouchableOpacity, Modal, Pressable } from 'react-native';
-import { exercises } from '../components/Data';
+import { exercises } from '../Data/Data';
 import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
-
 
 
 const options = {
