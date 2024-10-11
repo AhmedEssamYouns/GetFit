@@ -1,141 +1,62 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import Body from "react-native-body-highlighter"; // Ensure this library is installed
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import Body from "react-native-body-highlighter";
+import colors from '../consts/colors';
 
 interface Muscle {
     label: string;
     value: string;
+    intensity: Number;
 }
 
-interface Workout {
-    weight: number;
-}
 
 const muscles: Muscle[] = [
-    { label: "Forearm", value: "forearm" },
-    { label: "Abs", value: "abs" },
-    { label: "Chest", value: "chest" },
+    { label: "Forearm", value: "forearm", intensity: 0 },
+    { label: "Chest", value: "chest", intensity: 2 },
+    { label: "Trapezius", value: "trapezius", intensity: 1 },
+    { label: "Upper-back", value: "upper-back", intensity: 2 },
+    { label: "Lower-back", value: "lower-back", intensity: 3 },
+    { label: "Biceps", value: "biceps", intensity: 2 },
+    { label: "Triceps", value: "triceps", intensity: 3 },
+    { label: "Back-deltoids", value: "back-deltoids", intensity: 1 },
+    { label: "Front-deltoids", value: "front-deltoids", intensity: 2 },
+    { label: "Obliques", value: "obliques", intensity: 1 },
+    { label: "Adductor", value: "adductor", intensity: 2 },
+    { label: "Hamstring", value: "hamstring", intensity: 3 },
+    { label: "Quadriceps", value: "quadriceps", intensity: 2 },
+    { label: "Abductors", value: "abductors", intensity: 1 },
+    { label: "Calves", value: "calves", intensity: 3 },
+    { label: "Gluteal", value: "gluteal", intensity: 2 },
+    { label: "Head", value: "head", intensity: 1 },
+    { label: "Neck", value: "neck", intensity: 2 },
 ];
+
 
 const BodyScreen: React.FC = () => {
     const [side, setSide] = useState<'front' | 'back'>('front');
-    const [workouts, setWorkouts] = useState<Record<string, Workout[]>>({});
 
     const handleBodyPartPress = (bodyPart: { slug: string }) => {
         console.log('User tapped:', bodyPart.slug);
     };
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const jsonWorkouts = await AsyncStorage.getItem('workouts');
-                if (jsonWorkouts !== null) {
-                    const parsedWorkouts = JSON.parse(jsonWorkouts);
-                    if (JSON.stringify(parsedWorkouts) !== JSON.stringify(workouts)) {
-                        setWorkouts(parsedWorkouts);
-                    }
-                }
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-
-        fetchData();
-        const intervalId = setInterval(fetchData, 5000);
-
-        return () => clearInterval(intervalId);
-    }, [workouts]);
-
     const toggleSide = () => {
         setSide(prevSide => (prevSide === 'front' ? 'back' : 'front'));
-    };
-
-    const calculateIntensity = (muscle: string, latestWeight: number): string => {
-        switch (muscle) {
-            case 'chest':
-                if (latestWeight >= 90) return '5';
-                if (latestWeight >= 70) return '4';
-                if (latestWeight >= 50) return '3';
-                if (latestWeight >= 30) return '2';
-                if (latestWeight >= 10) return '1';
-                return '1';
-
-            case 'biceps':
-            case 'triceps':
-            case 'forearm':
-            case 'back-deltoids':
-            case 'front-deltoids':
-                if (latestWeight >= 40) return '5';
-                if (latestWeight >= 30) return '4';
-                if (latestWeight >= 20) return '3';
-                if (latestWeight >= 10) return '2';
-                if (latestWeight >= 5) return '1';
-                return '1';
-
-            case 'abs':
-            case 'obliques':
-                if (latestWeight >= 30) return '5';
-                if (latestWeight >= 20) return '4';
-                if (latestWeight >= 15) return '3';
-                if (latestWeight >= 10) return '2';
-                if (latestWeight >= 5) return '1';
-                return '1';
-
-            case 'adductor':
-            case 'hamstring':
-            case 'quadriceps':
-            case 'abductors':
-            case 'calves':
-            case 'gluteal':
-                if (latestWeight >= 50) return '5';
-                if (latestWeight >= 40) return '4';
-                if (latestWeight >= 30) return '3';
-                if (latestWeight >= 20) return '2';
-                if (latestWeight >= 10) return '1';
-                return '1';
-
-            case 'head':
-            case 'neck':
-                if (latestWeight >= 20) return '5';
-                if (latestWeight >= 15) return '4';
-                if (latestWeight >= 10) return '3';
-                if (latestWeight >= 5) return '2';
-                if (latestWeight >= 2) return '1';
-                return '1';
-
-            case 'trapezius':
-            case 'upper-back':
-            case 'lower-back':
-                if (latestWeight >= 50) return '5';
-                if (latestWeight >= 40) return '4';
-                if (latestWeight >= 30) return '3';
-                if (latestWeight >= 20) return '2';
-                if (latestWeight >= 10) return '1';
-                return '1';
-
-            default:
-                return '1';
-        }
-    };
-
-    const getLatestWeight = (muscleWorkouts: Workout[]): number => {
-        if (!muscleWorkouts || muscleWorkouts.length === 0) return 0;
-        return muscleWorkouts[muscleWorkouts.length - 1].weight;
     };
 
     return (
         <View style={styles.container}>
             <Body
                 data={muscles.map(muscle => {
-                    const latestWeight = getLatestWeight(workouts[muscle.value] || []);
-                    const intensity = calculateIntensity(muscle.value, latestWeight);
                     return {
                         slug: muscle.value,
-                        intensity: intensity,
+                        intensity: muscle.intensity,
                     };
                 })}
-                colors={['#FFCCCC', '#FF6666', '#FF3333', '#FF3333', '#990000']}
+                colors={[
+                    '#00ccaa',
+                    colors.secondaryButtonColor,
+                    colors.buttonTextColor,
+                ]}
                 gender="male"
                 onBodyPartPress={handleBodyPartPress}
                 side={side}
@@ -144,21 +65,6 @@ const BodyScreen: React.FC = () => {
             <TouchableOpacity onPress={toggleSide} style={styles.button}>
                 <Text style={styles.buttonText}>Rotate</Text>
             </TouchableOpacity>
-
-            <View style={styles.levelsContainer}>
-                <View style={{ flexDirection: "row" }}>
-                    <View style={[styles.levelBox, styles.beginner]} />
-                    <Text style={styles.levelText}>Beginner</Text>
-                </View>
-                <View style={{ flexDirection: "row" }}>
-                    <View style={[styles.levelBox, styles.intermediate]} />
-                    <Text style={styles.levelText}>Intermediate</Text>
-                </View>
-                <View style={{ flexDirection: "row" }}>
-                    <View style={[styles.levelBox, styles.advanced]} />
-                    <Text style={styles.levelText}>Advanced</Text>
-                </View>
-            </View>
         </View>
     );
 }
@@ -171,43 +77,12 @@ const styles = StyleSheet.create({
     },
     button: {
         padding: 10,
-        backgroundColor: 'gray',
+        backgroundColor: colors.secondaryButtonColor,
         borderRadius: 5,
     },
     buttonText: {
-        color: 'white',
+        color: colors.buttonTextColor,
         fontSize: 16,
-    },
-    levelsContainer: {
-        position: 'absolute',
-        flexDirection: 'column',
-        width: 200,
-        gap: 5,
-        bottom:300,
-        left: -30,
-        paddingHorizontal: 20,
-    },
-    levelBox: {
-        width: 20,
-        height: 20,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginHorizontal: 5,
-        borderRadius: 5,
-    },
-    beginner: {
-        backgroundColor: '#FFCCCC',
-    },
-    intermediate: {
-        backgroundColor: '#FF3333',
-    },
-    advanced: {
-        backgroundColor: '#990000',
-    },
-    levelText: {
-        color: '#fff',
-        fontSize: 12,
-        fontWeight: 'bold',
     },
 });
 

@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Feather, MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
-import HomeScreen from '../pages/Home';
-import TrackScreen from '../pages/TrackWorkoutScreen';
-import ExerciseScreen from '../pages/ExerciseScreen';
+import HomeScreen from '../screens/Home';
+import ExerciseScreen from '../screens/ExerciseScreen';
 import colors from '../consts/colors';
-
+import MuscleTrackingScreen from '../screens/TrackWorkoutScreen';
+import SavedWorkout from '../screens/SavedWorkoutScreen';
 const Tab = createBottomTabNavigator();
 
 function TabNavigator() {
@@ -42,7 +42,7 @@ function TabNavigator() {
         >
             <Tab.Screen name="Home" component={HomeScreen} />
             <Tab.Screen name="Exercise" component={ExerciseScreen} />
-            <Tab.Screen name="Track Progress" component={TrackScreen} />
+            <Tab.Screen name="Track Progress" component={SavedWorkout} />
         </Tab.Navigator>
     );
 }

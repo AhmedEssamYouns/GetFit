@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 
 interface WorkoutListProps {
@@ -9,18 +9,22 @@ interface WorkoutListProps {
 }
 
 const WorkoutList: React.FC<WorkoutListProps> = ({ workouts, currentMuscle, handleDeleteWorkout }) => {
+  if (!workouts || workouts.length === 0) {
+    return <Text>No workouts available for {currentMuscle}</Text>;
+  }
+
   return (
     <View style={styles.workoutListContainer}>
-      <FlatList
-        data={workouts}
-        keyExtractor={(item) => item.workoutNumber.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.workoutItem}>
+      <ScrollView>
+        {workouts.map((item) => (
+          <View key={item.workoutNumber} style={styles.workoutItem}>
             <Text style={styles.workoutText}>Workout {item.workoutNumber}: {item.weight} kg</Text>
-            <Feather name="trash" size={20} color="red" onPress={() => handleDeleteWorkout(item.workoutNumber)} />
+            <TouchableOpacity onPress={() => handleDeleteWorkout(item.workoutNumber)}>
+              <Feather name="trash" size={20} color="red" />
+            </TouchableOpacity>
           </View>
-        )}
-      />
+        ))}
+      </ScrollView>
     </View>
   );
 };

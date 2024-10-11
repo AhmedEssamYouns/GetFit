@@ -8,6 +8,7 @@ export const exercises = [
         equipment: 'Bodyweight',
         difficulty: 'Beginner',
         instructions: 'Start in a plank position with your arms straight. Lower your body until your chest almost touches the floor and push yourself back up.',
+        description: 'A fundamental bodyweight exercise that targets the chest, shoulders, and triceps.',
         gif: 'https://boxlifemagazine.com/wp-content/uploads/2024/02/push-up-1.gif'
     },
     {
@@ -18,8 +19,9 @@ export const exercises = [
         target: 'Upper Back',
         equipment: 'Pull-Up Bar',
         difficulty: 'Intermediate',
+        instructions: 'Hang from a pull-up bar with your palms facing away from you. Pull your body up until your chin is above the bar and then lower yourself back down.',
+        description: 'An upper-body strength exercise that primarily works the back muscles and biceps.',
         gif: 'https://www.inspireusafoundation.org/wp-content/uploads/2022/11/archer-pull-up.gif',
-        instructions: 'Hang from a pull-up bar with your palms facing away from you. Pull your body up until your chin is above the bar and then lower yourself back down.'
     },
     {
         id: 3,
@@ -27,10 +29,11 @@ export const exercises = [
         type: 'Strength',
         muscle: 'Legs',
         target: 'Quadriceps',
-        gif: 'https://th.bing.com/th/id/R.9bcc3db6d271d464a47ad0721fc8eaf3?rik=85etRdZe9ngM5w&pid=ImgRaw&r=0',
         equipment: 'Bodyweight',
         difficulty: 'Beginner',
-        instructions: 'Stand with your feet shoulder-width apart. Lower your body by bending your knees and hips, keeping your back straight. Return to the starting position.'
+        instructions: 'Stand with your feet shoulder-width apart. Lower your body by bending your knees and hips, keeping your back straight. Return to the starting position.',
+        description: 'A compound exercise that targets the quadriceps, hamstrings, and glutes.',
+        gif: 'https://th.bing.com/th/id/R.9bcc3db6d271d464a47ad0721fc8eaf3?rik=85etRdZe9ngM5w&pid=ImgRaw&r=0',
     },
     {
         id: 4,
@@ -38,10 +41,11 @@ export const exercises = [
         type: 'Strength',
         muscle: 'Legs',
         target: 'Lower Back',
-        gif: 'https://th.bing.com/th/id/R.8525e9e5921231cf8edb0c21856cc141?rik=HG8%2bPedlGrKPDQ&pid=ImgRaw&r=0',
         equipment: 'Barbell',
         difficulty: 'Intermediate',
-        instructions: 'Stand with your feet hip-width apart. Bend at your hips and knees to grasp the barbell. Lift the bar by straightening your hips and knees until you are standing upright.'
+        instructions: 'Stand with your feet hip-width apart. Bend at your hips and knees to grasp the barbell. Lift the bar by straightening your hips and knees until you are standing upright.',
+        description: 'A full-body exercise that primarily targets the back, glutes, and legs.',
+        gif: 'https://th.bing.com/th/id/R.8525e9e5921231cf8edb0c21856cc141?rik=HG8%2bPedlGrKPDQ&pid=ImgRaw&r=0',
     },
     {
         id: 5,
@@ -49,10 +53,11 @@ export const exercises = [
         type: 'Strength',
         muscle: 'Chest',
         target: 'Mid Chest',
-        gif: 'https://th.bing.com/th/id/R.8e34bb41d30ceb2f65aa7873a87a4371?rik=mO0G25RGfKf61w&pid=ImgRaw&r=0',
         equipment: 'Barbell',
         difficulty: 'Intermediate',
-        instructions: 'Lie on a bench with your feet flat on the floor. Grasp the barbell with a wide grip and lower it to your chest. Press the bar back up to the starting position.'
+        instructions: 'Lie on a bench with your feet flat on the floor. Grasp the barbell with a wide grip and lower it to your chest. Press the bar back up to the starting position.',
+        description: 'A powerful chest exercise that targets the pectoral muscles, shoulders, and triceps.',
+        gif: 'https://th.bing.com/th/id/R.8e34bb41d30ceb2f65aa7873a87a4371?rik=mO0G25RGfKf61w&pid=ImgRaw&r=0',
     },
     {
         id: 6,
@@ -62,7 +67,8 @@ export const exercises = [
         target: 'Biceps (Long Head)',
         equipment: 'Dumbbell',
         difficulty: 'Beginner',
-        instructions: 'Stand with a dumbbell in each hand, arms at your sides. Curl the weights while contracting your biceps. Lower the weights back to the starting position.'
+        instructions: 'Stand with a dumbbell in each hand, arms at your sides. Curl the weights while contracting your biceps. Lower the weights back to the starting position.',
+        description: 'An isolation exercise that targets the biceps for increased muscle size and strength.',
     },
     {
         id: 7,
@@ -72,7 +78,8 @@ export const exercises = [
         target: 'Rectus Abdominis',
         equipment: 'Bodyweight',
         difficulty: 'Beginner',
-        instructions: 'Start in a push-up position but with your elbows on the ground. Hold your body in a straight line from head to toes for the desired amount of time.'
+        instructions: 'Start in a push-up position but with your elbows on the ground. Hold your body in a straight line from head to toes for the desired amount of time.',
+        description: 'A core strengthening exercise that improves stability and endurance.',
     },
     {
         id: 8,
@@ -82,7 +89,8 @@ export const exercises = [
         target: 'Deltoids',
         equipment: 'Dumbbell',
         difficulty: 'Intermediate',
-        instructions: 'Stand with your feet shoulder-width apart and hold a dumbbell in each hand at shoulder height. Press the weights overhead until your arms are fully extended. Lower the weights back to shoulder height.'
+        instructions: 'Stand with your feet shoulder-width apart and hold a dumbbell in each hand at shoulder height. Press the weights overhead until your arms are fully extended. Lower the weights back to shoulder height.',
+        description: 'A shoulder exercise that targets the deltoids, triceps, and upper chest.',
     },
     {
         id: 9,
@@ -92,7 +100,8 @@ export const exercises = [
         target: 'Quadriceps',
         equipment: 'Bodyweight',
         difficulty: 'Beginner',
-        instructions: 'Stand with your feet together. Step forward with one leg and lower your hips until both knees are bent at about a 90-degree angle. Return to the starting position and repeat with the other leg.'
+        instructions: 'Stand with your feet together. Step forward with one leg and lower your hips until both knees are bent at about a 90-degree angle. Return to the starting position and repeat with the other leg.',
+        description: 'A lower body exercise that works the quadriceps, hamstrings, and glutes.',
     },
     {
         id: 10,
@@ -102,7 +111,8 @@ export const exercises = [
         target: 'Triceps (Long Head)',
         equipment: 'Dip Bar',
         difficulty: 'Intermediate',
-        instructions: 'Grasp the dip bars and lift yourself up. Lower your body by bending your elbows until your upper arms are parallel to the floor. Push yourself back up to the starting position.'
+        instructions: 'Grasp the dip bars and lift yourself up. Lower your body by bending your elbows until your upper arms are parallel to the floor. Push yourself back up to the starting position.',
+        description: 'An effective exercise to build strength and size in the triceps.',
     },
     {
         id: 11,
@@ -112,7 +122,8 @@ export const exercises = [
         target: 'Quadriceps',
         equipment: 'Leg Press Machine',
         difficulty: 'Beginner',
-        instructions: 'Sit on the leg press machine with your feet on the platform. Push the platform away by extending your legs. Slowly return to the starting position.'
+        instructions: 'Sit on the leg press machine with your feet on the platform. Push the platform away by extending your legs. Slowly return to the starting position.',
+        description: 'A compound exercise that targets the quadriceps, hamstrings, and glutes using a machine.',
     },
     {
         id: 12,
@@ -122,7 +133,8 @@ export const exercises = [
         target: 'Obliques',
         equipment: 'Bodyweight',
         difficulty: 'Intermediate',
-        instructions: 'Sit on the floor with your knees bent and feet flat. Lean back slightly and twist your torso to the right, then to the left to complete one rep.'
+        instructions: 'Sit on the floor with your knees bent and feet flat. Lean back slightly and twist your torso to the right, then to the left to complete one rep.',
+        description: 'A core exercise that focuses on the obliques and improves rotational strength.',
     },
     {
         id: 13,
@@ -132,7 +144,8 @@ export const exercises = [
         target: 'Full Body',
         equipment: 'Bodyweight',
         difficulty: 'Intermediate',
-        instructions: 'Start in a plank position. Bring one knee towards your chest and then quickly switch legs, simulating a running motion.'
+        instructions: 'Start in a plank position. Bring one knee towards your chest and then quickly switch legs, simulating a running motion.',
+        description: 'A high-intensity exercise that targets multiple muscle groups while improving cardiovascular fitness.',
     },
     {
         id: 14,
@@ -142,7 +155,8 @@ export const exercises = [
         target: 'Full Body',
         equipment: 'Bodyweight',
         difficulty: 'Intermediate',
-        instructions: 'Start in a standing position. Drop into a squat, place your hands on the ground, and jump your feet back into a plank position. Perform a push-up, then jump your feet back to your hands and explode into a jump.'
+        instructions: 'Start in a standing position. Drop into a squat, place your hands on the ground, and jump your feet back into a plank position. Perform a push-up, then jump your feet back to your hands and explode into a jump.',
+        description: 'A full-body exercise that combines strength and cardio for an intense workout.',
     },
     {
         id: 15,
@@ -152,7 +166,8 @@ export const exercises = [
         target: 'Lower Abs',
         equipment: 'Bodyweight',
         difficulty: 'Beginner',
-        instructions: 'Lie on your back with your legs straight. Lift your legs until they are perpendicular to the floor. Lower them back down slowly.'
+        instructions: 'Lie on your back with your legs straight. Lift your legs until they are perpendicular to the floor. Lower them back down slowly.',
+        description: 'An effective exercise for strengthening the lower abdominal muscles.',
     },
     {
         id: 16,
@@ -162,7 +177,8 @@ export const exercises = [
         target: 'Middle Back',
         equipment: 'Barbell',
         difficulty: 'Intermediate',
-        instructions: 'Stand with your feet shoulder-width apart and bend at the hips, keeping your back straight. Hold the barbell with an overhand grip and pull it towards your lower chest. Lower the barbell back to the starting position.'
+        instructions: 'Stand with your feet shoulder-width apart and bend at the hips, keeping your back straight. Hold the barbell with an overhand grip and pull it towards your lower chest. Lower the barbell back to the starting position.',
+        description: 'A compound exercise that targets the back, biceps, and shoulders.',
     },
     {
         id: 17,

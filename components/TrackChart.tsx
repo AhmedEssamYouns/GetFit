@@ -1,51 +1,54 @@
+// CustomBarChart.tsx
+
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 
-interface DataPoint {
-  day: string;
-  value: number;
+interface CustomBarChartProps {
+  data: number[];
 }
 
-interface ChartProps {
-  dataPoints: DataPoint[];
-}
-
-const Chart: React.FC<ChartProps> = ({ dataPoints }) => {
+const CustomBarChart: React.FC<CustomBarChartProps> = ({ data }) => {
+  const maxDataValue = Math.max(...data);
+  
   return (
-    <View style={styles.chartContainer}>
-      <ScrollView horizontal>
-        {dataPoints.map((point, index) => (
-          <View key={index} style={styles.barContainer}>
-            <Text style={styles.dayLabel}>{point.day}</Text>
-            <View style={[styles.bar, { height: point.value * 2 }]} />
+    <View style={styles.container}>
+      {data.map((value, index) => (
+        <View key={index} style={styles.barContainer}>
+          <Text style={styles.label}>Entry {index + 1}</Text>
+          <View style={[styles.bar, { height: (value / maxDataValue) * 100 }]}>
+            <Text style={styles.barText}>{value} kg</Text>
           </View>
-        ))}
-      </ScrollView>
+        </View>
+      ))}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  chartContainer: {
+  container: {
     flexDirection: 'row',
     alignItems: 'flex-end',
-    height: 120,
-    marginBottom: 20,
+    justifyContent: 'space-around',
+    marginVertical: 20,
   },
   barContainer: {
-    width: 50,
-    justifyContent: 'flex-end',
     alignItems: 'center',
-  },
-  dayLabel: {
-    fontSize: 12,
-    textAlign: 'center',
+    width: 40,
   },
   bar: {
-    width: 30,
-    backgroundColor: 'tomato',
+    backgroundColor: '#00ccff',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
     borderRadius: 5,
+  },
+  label: {
+    marginBottom: 5,
+  },
+  barText: {
+    color: '#ffffff',
+    fontWeight: 'bold',
   },
 });
 
-export default Chart;
+export default CustomBarChart;

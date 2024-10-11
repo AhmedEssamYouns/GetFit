@@ -1,17 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, Alert, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import colors from '../consts/colors';
 
-const SavedWorkoutsScreen = () => {
-    const [savedWorkouts, setSavedWorkouts] = useState([]);
+interface Workout {
+    plan: string;
+    level: string;
+    workoutPlan: Record<string, string[]>;
+}
 
-    // Fetch saved workouts from AsyncStorage when the component mounts
+const SavedWorkoutsScreen: React.FC = () => {
+    const [savedWorkouts, setSavedWorkouts] = useState<Workout[]>([]);
+
     useEffect(() => {
         const fetchSavedWorkouts = async () => {
             try {
                 const savedWorkoutsJson = await AsyncStorage.getItem('@saved_workout');
-                if (savedWorkoutsJson != null) {
-                    setSavedWorkouts(JSON.parse(savedWorkoutsJson));
+                if (savedWorkoutsJson) {
+                    const workouts: Workout[] = JSON.parse(savedWorkoutsJson);
+                    setSavedWorkouts(workouts);
                 }
             } catch (e) {
                 console.log('Failed to load saved workouts:', e);
@@ -21,8 +28,7 @@ const SavedWorkoutsScreen = () => {
         fetchSavedWorkouts();
     }, []);
 
-    // Function to delete a workout
-    const deleteWorkout = async (index) => {
+    const deleteWorkout = async (index: number) => {
         try {
             const updatedWorkouts = savedWorkouts.filter((_, i) => i !== index);
             setSavedWorkouts(updatedWorkouts);
@@ -34,12 +40,12 @@ const SavedWorkoutsScreen = () => {
         }
     };
 
-    const renderWorkoutItem = ({ item, index }) => (
+    const renderWorkoutItem = ({ item, index }: { item: Workout; index: number }) => (
         <View style={styles.workoutContainer}>
             <Text style={styles.workoutTitle}>{`${item.plan} - ${item.level}`}</Text>
             <FlatList
                 data={Object.entries(item.workoutPlan)}
-                keyExtractor={(item) => item[0]}
+                keyExtractor={(entry) => entry[0]}
                 renderItem={({ item }) => (
                     <View style={styles.dayContainer}>
                         <Text style={styles.dayTitle}>{item[0]}</Text>
@@ -77,19 +83,19 @@ const styles = StyleSheet.create({
     },
     workoutContainer: {
         marginBottom: 20,
-        padding: 15,
-        backgroundColor: '#fff',
-        borderRadius: 8,
+        padding: 20,
+        borderRadius: 18,
         shadowColor: '#000',
+        backgroundColor:colors.cardBackgroundColor,
         shadowOpacity: 0.1,
         shadowRadius: 5,
         shadowOffset: { width: 0, height: 2 },
-        elevation: 2,
     },
     workoutTitle: {
         fontSize: 20,
         fontWeight: 'bold',
         marginBottom: 10,
+        color:'#fff'
     },
     dayContainer: {
         marginBottom: 10,
@@ -98,15 +104,20 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         marginBottom: 5,
+        color:'#fff'
     },
     exerciseText: {
         fontSize: 16,
         marginBottom: 3,
+        color:'#fff'
     },
     deleteButton: {
-        backgroundColor: 'red',
+        backgroundColor: colors.Button,
+        borderRightWidth: 1,
+        borderLeftWidth: 1,
+        borderColor: colors.primaryButtonColor,
         padding: 10,
-        borderRadius: 5,
+        borderRadius: 25,
         alignItems: 'center',
         marginTop: 10,
     },
@@ -117,7 +128,7 @@ const styles = StyleSheet.create({
     emptyText: {
         textAlign: 'center',
         fontSize: 18,
-        color: '#777',
+        color: 'white',
     },
 });
 
