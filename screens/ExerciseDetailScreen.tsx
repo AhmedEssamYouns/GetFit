@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     },
     Row: {
         flexDirection: "row",
-        width: 200,
+        width: 150,
     },
     name: {
         fontSize: 20,
@@ -140,8 +140,6 @@ const styles = StyleSheet.create({
         color: colors.primaryTextColor,
     },
     infoRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
         backgroundColor: colors.cardBackgroundColor,
         padding: 10,
         borderRadius: 10,

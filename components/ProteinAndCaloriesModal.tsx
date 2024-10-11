@@ -22,8 +22,6 @@ const ProteinAndCaloriesModal: React.FC<ProteinAndCaloriesModalProps> = ({
 
     const handleCalculate = (goal: string) => {
         onCalculate(weight, height, goal);
-        setWeight('');
-        setHeight('');
     };
 
     return (
@@ -35,12 +33,14 @@ const ProteinAndCaloriesModal: React.FC<ProteinAndCaloriesModalProps> = ({
                         style={styles.input}
                         placeholder="Enter your weight (kg)"
                         keyboardType="numeric"
+                        placeholderTextColor={'#fff'}
                         onChangeText={setWeight}
                         value={weight}
                     />
                     <TextInput
                         style={styles.input}
                         placeholder="Enter your height (cm)"
+                        placeholderTextColor={'#fff'}
                         keyboardType="numeric"
                         onChangeText={setHeight}
                         value={height}

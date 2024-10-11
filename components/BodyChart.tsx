@@ -62,9 +62,9 @@ const BodyScreen: React.FC = () => {
                 side={side}
                 scale={1.1}
             />
-            <TouchableOpacity onPress={toggleSide} style={styles.button}>
+            {/* <TouchableOpacity onPress={toggleSide} style={styles.button}>
                 <Text style={styles.buttonText}>Rotate</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
         </View>
     );
 }

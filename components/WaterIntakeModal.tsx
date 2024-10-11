@@ -30,6 +30,7 @@ const WaterIntakeModal: React.FC<WaterIntakeModalProps> = ({
                     <TextInput
                         style={styles.input}
                         placeholder="Enter your weight (kg)"
+                        placeholderTextColor={'#fff'}
                         keyboardType="numeric"
                         onChangeText={setWeight}
                         value={weight}

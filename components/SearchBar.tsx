@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
     searchBar: {
         flex: 1,
         height: 40,
+        color:'white',
         paddingHorizontal: 10,
     },
 });

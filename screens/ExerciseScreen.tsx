@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { View, FlatList, StyleSheet } from 'react-native';
+import { View, FlatList, Text, StyleSheet } from 'react-native';
 import { exercises } from '../Data/Data';
 import SearchBar from '../components/SearchBar';
 import CategoryButton from '../components/CategoryButton';
 import ExerciseCard from '../components/ExerciseCard';
-import colors from '../consts/colors';
 import GradientBackground from '../components/GradientBackground';
 import Header from '../components/header';
 
@@ -71,6 +70,10 @@ const ExerciseScreen = ({ navigation }) => {
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id.toString()}
                 contentContainerStyle={styles.list}
+                ListEmptyComponent={
+                    <Text style={{ color: 'white', alignSelf: 'center',margin:30,fontSize:14 }}>
+                        No Exercises Found with {search}
+                    </Text>}
             />
         </GradientBackground>
     );

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Modal, TextInput, FlatList, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Modal, TextInput, FlatList, Alert, KeyboardAvoidingView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import GradientBackground from '../components/GradientBackground';
@@ -205,7 +205,7 @@ const CreateWorkout = () => {
 
   return (
     <GradientBackground>
-      <Header text='create program' arrowBack onBackPress={()=>navigation.goBack()}/>
+      <Header text='create program' arrowBack onBackPress={() => navigation.goBack()} />
       <View style={styles.container}>
         <View style={{ flexDirection: "row", gap: 5, alignSelf: 'center' }}>
           <TextInput
@@ -219,27 +219,30 @@ const CreateWorkout = () => {
             <Text style={styles.saveButtonText}>Save Program</Text>
           </TouchableOpacity>
         </View>
-
-        <FlatList
-          data={workoutDays}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={renderDays}
-          ListFooterComponent={
-            <View>
-              <TextInput
-                style={styles.input}
-                placeholder="Enter day name"
-                placeholderTextColor="#a0a0a0"
-                value={currentDay}
-                onChangeText={setCurrentDay}
-              />
-              <TouchableOpacity style={styles.addButton} onPress={handleAddDay}>
-                <Text style={styles.buttonText}>Add Day</Text>
-              </TouchableOpacity>
-            </View>
-          }
-        />
-
+        <KeyboardAvoidingView style={{margin:20}}>
+          <FlatList
+            data={workoutDays}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={renderDays}
+            ListFooterComponent={
+              <View style={{
+                padding: 10, flexDirection: 'row', justifyContent: 'center',
+                alignItems: "center"
+              }}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Enter day name"
+                  placeholderTextColor="#a0a0a0"
+                  value={currentDay}
+                  onChangeText={setCurrentDay}
+                />
+                <TouchableOpacity style={styles.addButton} onPress={handleAddDay}>
+                  <Text style={styles.buttonText}>Add Day</Text>
+                </TouchableOpacity>
+              </View>
+            }
+          />
+        </KeyboardAvoidingView>
         <Modal
           animationType="slide"
           transparent={true}
@@ -247,143 +250,143 @@ const CreateWorkout = () => {
           onRequestClose={() => {
             setModalVisible(!
               modalVisible);
-            }}
-          >
-            <View style={styles.modalOverlay}>
-              <View style={styles.modalContent}>
-                <Text style={styles.modalTitle}>
-                  {isEditing ? `Edit ${modalType}` : `Add ${modalType}`}
+          }}
+        >
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalTitle}>
+                {isEditing ? `Edit ${modalType}` : `Add ${modalType}`}
+              </Text>
+              <TextInput
+                style={styles.input}
+                placeholder={`Enter ${modalType.toLowerCase()} name`}
+                placeholderTextColor="#a0a0a0"
+                value={currentMuscle || currentExercise}
+                onChangeText={(text) => {
+                  modalType === 'Muscle'
+                    ? setCurrentMuscle(text)
+                    : setCurrentExercise(text);
+                }}
+              />
+              <TouchableOpacity
+                style={styles.addButton}
+                onPress={() => {
+                  if (modalType === 'Muscle') {
+                    isEditing ? handleEditMuscle() : handleAddMuscle();
+                  } else {
+                    isEditing ? handleEditExercise() : handleAddExercise();
+                  }
+                  setModalVisible(false);
+                }}
+              >
+                <Text style={styles.buttonText}>
+                  {isEditing ? 'Update' : 'Add'}
                 </Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder={`Enter ${modalType.toLowerCase()} name`}
-                  placeholderTextColor="#a0a0a0"
-                  value={currentMuscle || currentExercise}
-                  onChangeText={(text) => {
-                    modalType === 'Muscle'
-                      ? setCurrentMuscle(text)
-                      : setCurrentExercise(text);
-                  }}
-                />
-                <TouchableOpacity
-                  style={styles.addButton}
-                  onPress={() => {
-                    if (modalType === 'Muscle') {
-                      isEditing ? handleEditMuscle() : handleAddMuscle();
-                    } else {
-                      isEditing ? handleEditExercise() : handleAddExercise();
-                    }
-                    setModalVisible(false);
-                  }}
-                >
-                  <Text style={styles.buttonText}>
-                    {isEditing ? 'Update' : 'Add'}
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.cancelButton}
-                  onPress={() => setModalVisible(false)}
-                >
-                  <Text style={styles.cancelButtonText}>Cancel</Text>
-                </TouchableOpacity>
-              </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.cancelButton}
+                onPress={() => setModalVisible(false)}
+              >
+                <Text style={styles.cancelButtonText}>Cancel</Text>
+              </TouchableOpacity>
             </View>
-          </Modal>
-        </View>
-      </GradientBackground>
-    );
-  };
-  
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      padding: 20,
-    },
-    input: {
-      height: 40,
-      marginBottom:15,
-      borderColor: '#444',
-      borderWidth: 1,
-      borderRadius: 5,
-      paddingHorizontal: 10,
-      color: '#fff', 
-      backgroundColor: '#333', 
-    },
-    sectionContainer: {
-      marginBottom: 20,
-      backgroundColor: '#222', 
-      padding: 15,
-      borderRadius: 10,
-    },
-    sectionTitle: {
-      fontSize: 18,
-      color: '#fff', 
-      marginBottom: 5,
-    },
-    itemText: {
-      color: '#fff', 
-    },
-    inlineButtons: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      marginTop: 10,
-    },
-    addButton: {
-      backgroundColor: '#007bff',
-      padding: 10,
-      borderRadius: 5,
-      alignItems: 'center',
-    },
-    buttonText: {
-      color: '#fff', 
-    },
-    deleteText: {
-      color: 'red',
-      textDecorationLine: 'underline',
-    },
-    editText: {
-      color: 'orange',
-      textDecorationLine: 'underline',
-    },
-    modalOverlay: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: 'rgba(0, 0, 0, 0.7)', 
-    },
-    modalContent: {
-      width: '80%',
-      backgroundColor: '#333',
-      padding: 20,
-      borderRadius: 10,
-    },
-    modalTitle: {
-      fontSize: 20,
-      color: '#fff', 
-      marginBottom: 15,
-      textAlign: 'center',
-    },
-    cancelButton: {
-      backgroundColor: 'gray',
-      padding: 10,
-      borderRadius: 5,
-      alignItems: 'center',
-      marginTop: 10,
-    },
-    cancelButtonText: {
-      color: '#fff', 
-    },
-    saveButton: {
-      backgroundColor: '#28a745',
-      padding: 10,
-      borderRadius: 5,
-      alignSelf: 'flex-start',
-      marginLeft: 10,
-    },
-    saveButtonText: {
-      color: '#fff', 
-    },
-  });
-  
-  export default CreateWorkout;
-  
+          </View>
+        </Modal>
+      </View>
+    </GradientBackground>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+  },
+  input: {
+    height: 40,
+    borderColor: '#444',
+    borderTopLeftRadius: 5,
+    zIndex: 10,
+    left: 5,
+    borderBottomLeftRadius: 5,
+    paddingHorizontal: 10,
+    color: '#fff',
+    backgroundColor: '#333',
+  },
+  sectionContainer: {
+    marginBottom: 20,
+    backgroundColor: '#222',
+    padding: 15,
+    borderRadius: 10,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    color: '#fff',
+    marginBottom: 5,
+  },
+  itemText: {
+    color: '#fff',
+  },
+  inlineButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
+  },
+  addButton: {
+    backgroundColor: '#007bff',
+    padding: 9,
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+  },
+  deleteText: {
+    color: 'red',
+    textDecorationLine: 'underline',
+  },
+  editText: {
+    color: 'orange',
+    textDecorationLine: 'underline',
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+  },
+  modalContent: {
+    width: '80%',
+    backgroundColor: '#333',
+    padding: 20,
+    borderRadius: 10,
+  },
+  modalTitle: {
+    fontSize: 20,
+    color: '#fff',
+    marginBottom: 15,
+    textAlign: 'center',
+  },
+  cancelButton: {
+    backgroundColor: 'gray',
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  cancelButtonText: {
+    color: '#fff',
+  },
+  saveButton: {
+    backgroundColor: '#28a745',
+    padding: 10,
+    borderRadius: 5,
+    alignSelf: 'flex-start',
+    marginLeft: 10,
+  },
+  saveButtonText: {
+    color: '#fff',
+  },
+});
+
+export default CreateWorkout;

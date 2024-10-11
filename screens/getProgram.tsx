@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, TouchableOpacity, StyleSheet ,Text} from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, TouchableOpacity, StyleSheet, Text, Animated } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import GradientBackground from '../components/GradientBackground';
 import colors from '../consts/colors';
@@ -32,6 +32,30 @@ const GetProgram: React.FC<GetProgramProps> = ({ navigation }) => {
   const [programLevel, setProgramLevel] = useState<string>('Beginner');
   const [programPlan, setProgramPlan] = useState<string>('');
 
+  const opacityMotivational = useRef(new Animated.Value(0)).current;
+  const opacitySuggest = useRef(new Animated.Value(0)).current;
+  const opacityChoose = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.sequence([
+      Animated.timing(opacityMotivational, {
+        toValue: 1,
+        duration: 1000,
+        useNativeDriver: true,
+      }),
+      Animated.timing(opacitySuggest, {
+        toValue: 1,
+        duration: 1000,
+        useNativeDriver: true,
+      }),
+      Animated.timing(opacityChoose, {
+        toValue: 1,
+        duration: 1000,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, [opacityMotivational, opacitySuggest, opacityChoose]);
+
   const suggestPlan = (days: string, level: string) => {
     const numDays = parseInt(days);
     let suggestedPlan = '';
@@ -52,12 +76,25 @@ const GetProgram: React.FC<GetProgramProps> = ({ navigation }) => {
     <GradientBackground>
       <Header text={'Program'} arrowBack={true} onBackPress={() => navigation.goBack()} />
       <View style={styles.container}>
+        <Animated.Text style={[styles.hintText, { opacity: opacityMotivational }]}>
+          Start your fitness journey by selecting or getting a program!
+        </Animated.Text>
+
+        <Animated.Text style={[styles.motivationalText, { opacity: opacitySuggest }]}>
+          Click here to suggest a plan based on your daily routine!
+        </Animated.Text>
+
         <TouchableOpacity
           style={styles.button}
           onPress={() => setSuggestProgramModalVisible(true)}
         >
-        <Text style={styles.buttonText}>Suggest Program</Text>
+          <Text style={styles.buttonText}>Suggest Program</Text>
         </TouchableOpacity>
+
+        <Animated.Text style={[styles.motivationalText, { opacity: opacityChoose }]}>
+          Or choose a program that suits you!
+        </Animated.Text>
+
         <TouchableOpacity
           style={styles.button}
           onPress={() => setChooseProgramModalVisible(true)}
@@ -96,9 +133,28 @@ const GetProgram: React.FC<GetProgramProps> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  motivationalText: {
+    fontSize: 18,
+    color: '#fff',
+    marginTop:20,
+    backgroundColor: colors.cardBackgroundColor,
+    padding: 15,
+    borderRadius: 20,
+    marginHorizontal: 20,
+    textAlign: 'center',
+    paddingHorizontal: 20,
+  },
+  hintText: {
+    fontSize: 24,
+    fontStyle:'italic',
+    color: '#fff',
+    marginBottom: 60,
+    textAlign: 'center',
+    paddingHorizontal: 20,
   },
   button: {
     backgroundColor: colors.header,
