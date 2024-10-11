@@ -3,6 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import SavedWorkoutList from '../components/SavedWorkoutList';
 import SavedWorkoutsScreen from '../components/SavedProgramList';
 import GradientBackground from '../components/GradientBackground';
+import colors from '../consts/colors';
 
 const SavedWorkout = () => {
   const [viewType, setViewType] = useState('workouts');
@@ -15,13 +16,15 @@ const SavedWorkout = () => {
             style={[styles.toggleButton, viewType === 'workouts' && styles.activeButton]}
             onPress={() => setViewType('workouts')}
           >
-            <Text style={styles.buttonText}>Customized Programs</Text>
+            <Text style={[styles.buttonText, viewType === 'workouts' && styles.activeButtonText]}
+            >Customized Programs</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.toggleButton, viewType === 'programs' && styles.activeButton]}
             onPress={() => setViewType('programs')}
           >
-            <Text style={styles.buttonText}>Suggested Programs</Text>
+            <Text style={[styles.buttonText, viewType === 'programs' && styles.activeButtonText]}
+            >Suggested Programs</Text>
           </TouchableOpacity>
         </View>
 
@@ -42,21 +45,29 @@ const styles = StyleSheet.create({
   },
   buttonGroup: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
     marginBottom: 20,
+    gap: 15,
   },
   toggleButton: {
-    padding: 6,
-    borderRadius: 5,
-    backgroundColor: '#6c757d',
+    padding: 10,
+    borderRadius: 15,
+    backgroundColor: colors.Button,
+    borderRightWidth: 1,
+    borderLeftWidth: 1,
+    borderColor: colors.primaryButtonColor,
   },
   activeButton: {
-    backgroundColor: 'tomato',
+    backgroundColor: colors.primaryButtonColor,
   },
   buttonText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 13,
   },
+  activeButtonText: {
+    color: 'black',
+    fontSize: 13,
+
+  }
 });
 
 export default SavedWorkout;

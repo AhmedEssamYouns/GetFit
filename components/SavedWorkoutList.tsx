@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import colors from '../consts/colors';
 
 interface Exercise {
     name: string;
@@ -58,8 +59,8 @@ const SavedWorkoutList: React.FC = () => {
     );
 
     const renderMuscles = ({ item: muscle }: { item: Muscle }) => (
-        <View style={styles.sectionContainer}>
-            <Text style={styles.sectionTitle}>Muscle: {muscle.name}</Text>
+        <View style={{padding:10}}>
+            <Text style={{color:"white",fontWeight:'bold'}}>Muscle: {muscle.name}</Text>
             <FlatList
                 data={muscle.exercises}
                 keyExtractor={(item, index) => index.toString()}
@@ -69,8 +70,8 @@ const SavedWorkoutList: React.FC = () => {
     );
 
     const renderDays = ({ item: day }: { item: Day }) => (
-        <View style={styles.sectionContainer}>
-            <Text style={styles.sectionTitle}>Day: {day.name}</Text>
+        <View style={{ borderBottomWidth: 1 ,borderBottomColor:'white',padding:10}}>
+            <Text style={{color:"white",fontWeight:'bold'}}>Day: {day.name}</Text>
             <FlatList
                 data={day.muscles}
                 keyExtractor={(item, index) => index.toString()}
@@ -94,7 +95,7 @@ const SavedWorkoutList: React.FC = () => {
     );
 
     return (
-        
+
         <FlatList
             data={savedWorkouts}
             renderItem={renderWorkouts}
@@ -108,47 +109,47 @@ const SavedWorkoutList: React.FC = () => {
 const styles = StyleSheet.create({
     workoutContainer: {
         marginBottom: 20,
-        padding: 10,
-        margin: 20,
-        borderRadius: 5,
+        padding: 20,
+        borderRadius: 18,
         shadowColor: '#000',
+        backgroundColor: colors.cardBackgroundColor,
+        shadowOpacity: 0.1,
+        shadowRadius: 5,
         shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 2,
-        elevation: 2,
-    },
-    workoutTitle: {
-        padding: 5,
-        fontSize: 20,
-        fontWeight: 'bold',
-    },
-    sectionContainer: {
-        marginBottom: 10,
-        padding: 10,
-        backgroundColor: '#fff',
-        borderRadius: 5,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 2,
-        elevation: 2,
-    },
-    sectionTitle: {
-        padding: 5,
-        fontSize: 18,
-        fontWeight: 'bold',
     },
     itemText: {
-        padding: 5,
         fontSize: 16,
-        marginLeft: 10,
+        color: '#fff'
+    },
+    workoutTitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 10,
+        color: '#fff'
+    },
+    dayContainer: {
+        marginBottom: 10,
+    },
+    dayTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 5,
+        color: '#fff'
+    },
+    exerciseText: {
+        fontSize: 16,
+        marginBottom: 3,
+        color: '#fff'
     },
     deleteButton: {
-        backgroundColor: 'red',
-        padding: 15,
-        borderRadius: 5,
+        backgroundColor: colors.Button,
+        borderRightWidth: 1,
+        borderLeftWidth: 1,
+        borderColor: colors.primaryButtonColor,
+        padding: 10,
+        borderRadius: 25,
         alignItems: 'center',
-        marginTop: 20,
+        marginTop: 10,
     },
     buttonText: {
         color: '#fff',

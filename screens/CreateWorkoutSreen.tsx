@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Modal, TextInput, FlatList, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
+import GradientBackground from '../components/GradientBackground';
+import Header from '../components/header';
 
 const CreateWorkout = () => {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   const [workoutDays, setWorkoutDays] = useState([]);
   const [currentDay, setCurrentDay] = useState('');
   const [currentMuscle, setCurrentMuscle] = useState('');
@@ -108,7 +110,6 @@ const CreateWorkout = () => {
       setWorkoutDays([]);
       setWorkoutName('');
       Alert.alert('Success', 'Workout program saved successfully!');
-      navigation.navigate('My Program')
 
     } catch (e) {
       Alert.alert('Error', 'Failed to save the workout program.');
@@ -203,174 +204,186 @@ const CreateWorkout = () => {
   );
 
   return (
-    <View style={styles.container}>
-      <View style={{ flexDirection: "row", gap: 5, alignSelf: 'center' }}>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter workout program name"
-          value={workoutName}
-          onChangeText={setWorkoutName}
+    <GradientBackground>
+      <Header text='create program' arrowBack onBackPress={()=>navigation.goBack()}/>
+      <View style={styles.container}>
+        <View style={{ flexDirection: "row", gap: 5, alignSelf: 'center' }}>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter workout program name"
+            placeholderTextColor="#a0a0a0"
+            value={workoutName}
+            onChangeText={setWorkoutName}
+          />
+          <TouchableOpacity style={styles.saveButton} onPress={saveProgram}>
+            <Text style={styles.saveButtonText}>Save Program</Text>
+          </TouchableOpacity>
+        </View>
+
+        <FlatList
+          data={workoutDays}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={renderDays}
+          ListFooterComponent={
+            <View>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter day name"
+                placeholderTextColor="#a0a0a0"
+                value={currentDay}
+                onChangeText={setCurrentDay}
+              />
+              <TouchableOpacity style={styles.addButton} onPress={handleAddDay}>
+                <Text style={styles.buttonText}>Add Day</Text>
+              </TouchableOpacity>
+            </View>
+          }
         />
-        <TouchableOpacity style={styles.saveButton} onPress={saveProgram}>
-          <Text style={{ color: "white", fontSize: 10, padding: 5 }}>Save Program</Text>
-        </TouchableOpacity>
-      </View>
 
-
-      <FlatList
-        data={workoutDays}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={renderDays}
-        ListFooterComponent={
-          <View>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter day name"
-              value={currentDay}
-              onChangeText={setCurrentDay}
-            />
-            <TouchableOpacity style={styles.addButton} onPress={handleAddDay}>
-              <Text style={styles.buttonText}>Add Day</Text>
-            </TouchableOpacity>
-          </View>
-        }
-      />
-
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <TouchableOpacity style={styles.modalContainer} onPressOut={() => setModalVisible(false)}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>{isEditing ? `Edit ${modalType}` : `Add ${modalType}`}</Text>
-            <TextInput
-              style={styles.input}
-              placeholder={`Enter ${modalType.toLowerCase()} name`}
-              value={modalType === 'Muscle' ? currentMuscle : currentExercise}
-              onChangeText={modalType === 'Muscle' ? setCurrentMuscle : setCurrentExercise}
-            />
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => {
-                if (isEditing) {
-                  modalType === 'Muscle' ? handleEditMuscle() : handleEditExercise();
-                } else {
-                  modalType === 'Muscle' ? handleAddMuscle() : handleAddExercise();
-                }
-                setModalVisible(false);
-              }}
-            >
-              <Text style={styles.buttonText}>{isEditing ? 'Edit' : 'Add'}</Text>
-            </TouchableOpacity>
-          </View>
-        </TouchableOpacity>
-      </Modal>
-    </View>
-  );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: '#f8f9fa',
-  },
-  sectionContainer: {
-    marginBottom: 20,
-    padding: 10,
-    backgroundColor: '#fff',
-    borderRadius: 5,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-    elevation: 2,
-  },
-  sectionTitle: {
-    padding: 5,
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  itemText: {
-    padding: 5,
-    fontSize: 16,
-    marginLeft: 10,
-  },
-  inlineButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginHorizontal: 10,
-  },
-  deleteText: {
-    color: 'red',
-    marginTop: 5,
-  },
-  editText: {
-    color: 'blue',
-    marginTop: 5,
-  },
-  addButton: {
-    backgroundColor: 'tomato',
-    padding: 7,
-    borderRadius: 5,
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-  },
-  input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    borderRadius: 5,
-    marginVertical: 10,
-    paddingHorizontal: 10,
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!
+              modalVisible);
+            }}
+          >
+            <View style={styles.modalOverlay}>
+              <View style={styles.modalContent}>
+                <Text style={styles.modalTitle}>
+                  {isEditing ? `Edit ${modalType}` : `Add ${modalType}`}
+                </Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder={`Enter ${modalType.toLowerCase()} name`}
+                  placeholderTextColor="#a0a0a0"
+                  value={currentMuscle || currentExercise}
+                  onChangeText={(text) => {
+                    modalType === 'Muscle'
+                      ? setCurrentMuscle(text)
+                      : setCurrentExercise(text);
+                  }}
+                />
+                <TouchableOpacity
+                  style={styles.addButton}
+                  onPress={() => {
+                    if (modalType === 'Muscle') {
+                      isEditing ? handleEditMuscle() : handleAddMuscle();
+                    } else {
+                      isEditing ? handleEditExercise() : handleAddExercise();
+                    }
+                    setModalVisible(false);
+                  }}
+                >
+                  <Text style={styles.buttonText}>
+                    {isEditing ? 'Update' : 'Add'}
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.cancelButton}
+                  onPress={() => setModalVisible(false)}
+                >
+                  <Text style={styles.cancelButtonText}>Cancel</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+        </View>
+      </GradientBackground>
+    );
+  };
+  
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 20,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: 'center',
-    fontSize: 18,
-  },
-  button: {
-    backgroundColor: 'tomato',
-    padding: 15,
-    margin: 10,
-    borderRadius: 5,
-  },
-  saveButton: {
-    backgroundColor: 'green',
-    borderRadius: 5,
-    justifyContent: "center",
-    alignItems: 'center',
-    marginVertical: 10,
-  },
-});
-
-export default CreateWorkout;
+    input: {
+      height: 40,
+      marginBottom:15,
+      borderColor: '#444',
+      borderWidth: 1,
+      borderRadius: 5,
+      paddingHorizontal: 10,
+      color: '#fff', 
+      backgroundColor: '#333', 
+    },
+    sectionContainer: {
+      marginBottom: 20,
+      backgroundColor: '#222', 
+      padding: 15,
+      borderRadius: 10,
+    },
+    sectionTitle: {
+      fontSize: 18,
+      color: '#fff', 
+      marginBottom: 5,
+    },
+    itemText: {
+      color: '#fff', 
+    },
+    inlineButtons: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginTop: 10,
+    },
+    addButton: {
+      backgroundColor: '#007bff',
+      padding: 10,
+      borderRadius: 5,
+      alignItems: 'center',
+    },
+    buttonText: {
+      color: '#fff', 
+    },
+    deleteText: {
+      color: 'red',
+      textDecorationLine: 'underline',
+    },
+    editText: {
+      color: 'orange',
+      textDecorationLine: 'underline',
+    },
+    modalOverlay: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'rgba(0, 0, 0, 0.7)', 
+    },
+    modalContent: {
+      width: '80%',
+      backgroundColor: '#333',
+      padding: 20,
+      borderRadius: 10,
+    },
+    modalTitle: {
+      fontSize: 20,
+      color: '#fff', 
+      marginBottom: 15,
+      textAlign: 'center',
+    },
+    cancelButton: {
+      backgroundColor: 'gray',
+      padding: 10,
+      borderRadius: 5,
+      alignItems: 'center',
+      marginTop: 10,
+    },
+    cancelButtonText: {
+      color: '#fff', 
+    },
+    saveButton: {
+      backgroundColor: '#28a745',
+      padding: 10,
+      borderRadius: 5,
+      alignSelf: 'flex-start',
+      marginLeft: 10,
+    },
+    saveButtonText: {
+      color: '#fff', 
+    },
+  });
+  
+  export default CreateWorkout;
+  

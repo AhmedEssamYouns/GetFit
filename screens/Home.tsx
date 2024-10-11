@@ -81,7 +81,7 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Create Workout')}>
-            <Text style={styles.buttonText}>Customize A Program</Text>
+            <Text style={styles.buttonText}>Custom Program</Text>
           </TouchableOpacity>
         </View>
         <View style={{ flexDirection: 'row' }}>
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 5,
     alignItems:'center',
-    width:170,
+    width:150,
     borderRadius: 15,
   },
   buttonText: {

@@ -4,7 +4,6 @@ import { Feather, MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
 import HomeScreen from '../screens/Home';
 import ExerciseScreen from '../screens/ExerciseScreen';
 import colors from '../consts/colors';
-import MuscleTrackingScreen from '../screens/TrackWorkoutScreen';
 import SavedWorkout from '../screens/SavedWorkoutScreen';
 const Tab = createBottomTabNavigator();
 
